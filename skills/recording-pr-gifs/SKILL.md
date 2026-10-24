@@ -17,9 +17,9 @@ history, never lands in a normal clone, and still renders on private repos.
 a scratch directory (your scratchpad if you have one, else `mktemp -d`), never
 into the repo.
 
-Needs: Node 18+, Playwright installed in the project (`@playwright/test` or
-`playwright`, with Chromium downloaded), `ffmpeg`, and `gh` authenticated with
-write access to the repo.
+Needs: Node 18+, Playwright installed in the project (`@playwright/test`,
+`playwright`, or `playwright-core` with `channel: "chrome"`), `ffmpeg`, and `gh`
+authenticated with write access to the repo.
 
 ## Recipe
 

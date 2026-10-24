@@ -21,8 +21,9 @@ That installs the `recording-pr-gifs` skill for Claude Code (into
 [skills](https://skills.sh) supports. Add `-g` to install it for every project.
 Update later with `npx skills update`.
 
-You need Node 18+, Playwright in the project with Chromium downloaded, `ffmpeg`,
-and the [GitHub CLI](https://cli.github.com) signed in with write access.
+You need Node 18+, Playwright in the project (or just `playwright-core` plus your
+installed Chrome), `ffmpeg`, and the [GitHub CLI](https://cli.github.com) signed
+in with write access.
 
 ## Per-project config
 

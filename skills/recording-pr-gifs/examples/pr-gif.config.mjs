@@ -46,7 +46,9 @@ export default {
   // The synthetic cursor, so clicks are legible. Any CSS color.
   cursorColor: "#5856ff",
 
-  // "chromium" for full headless Chrome, which renders PDFs; the default headless
-  // shell records an empty frame where a PDF should be. --channel overrides it.
+  // "chromium" for full headless Chromium, which renders PDFs; the default
+  // headless shell records an empty frame where a PDF should be. "chrome" uses
+  // the installed Google Chrome — handy with playwright-core, which downloads no
+  // browser. --channel overrides it.
   // channel: "chromium",
 }

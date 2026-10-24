@@ -15,9 +15,9 @@
 //     [--colors 128]          GIF palette size (default: config `gif.colors`)
 //     [--reuse-frames]        skip recording; re-encode the frames already in --out
 //
-// Run it from the directory where @playwright/test (or playwright) is installed —
-// usually the repo root, or the frontend package in a monorepo. ffmpeg must be on
-// PATH. Without --gif it stops after writing the PNG frames.
+// Run it from the directory where @playwright/test, playwright or playwright-core
+// is installed — usually the repo root, or the frontend package in a monorepo.
+// ffmpeg must be on PATH. Without --gif it stops after writing the PNG frames.
 //
 // The flow file default-exports `async (page) => {}` and drives the UI with
 // ordinary Playwright locators. The recorder signs in (per the config) before
@@ -76,14 +76,16 @@ async function record() {
   // `import()` of @playwright/test exposes no named `chromium`.
   const requireFromCwd = createRequire(join(process.cwd(), "noop.cjs"))
   let playwright
-  for (const name of ["@playwright/test", "playwright"]) {
+  for (const name of ["@playwright/test", "playwright", "playwright-core"]) {
     try {
       playwright = requireFromCwd(name)
       break
     } catch {}
   }
   if (!playwright) {
-    die("cannot resolve @playwright/test or playwright — run this from the directory that installs it")
+    die(
+      "cannot resolve @playwright/test, playwright or playwright-core — run this from the directory that installs it",
+    )
   }
 
   const base = arg("base", config.baseURL)
