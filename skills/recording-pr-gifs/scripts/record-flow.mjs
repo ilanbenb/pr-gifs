@@ -173,15 +173,19 @@ async function record() {
   const { default: flow } = await import(pathToFileURL(resolve(flowPath)).href)
 
   let frame = 0
+  let dropped = 0
   let capturing = true
   const capture = (async () => {
     while (capturing) {
       const next = Date.now() + frameMs
       try {
-        const png = await page.screenshot({ type: "png", animations: "allow" })
+        // Mid-navigation screenshots throw, or stall until the timeout (a shot of
+        // the initial about:blank can hang for Playwright's default 30 s — the
+        // whole flow). Dropping a frame is fine at 8 fps; losing the recording isn't.
+        const png = await page.screenshot({ type: "png", animations: "allow", timeout: 1000 })
         writeFileSync(join(out, `f${String(++frame).padStart(4, "0")}.png`), png)
       } catch {
-        // Mid-navigation screenshots throw; dropping the frame is fine at 8 fps.
+        dropped++
       }
       const wait = next - Date.now()
       if (wait > 0) await new Promise((r) => setTimeout(r, wait))
@@ -201,7 +205,9 @@ async function record() {
   }
 
   if (failure) die(`flow failed after ${frame} frames: ${failure.message}`)
+  if (frame === 0) die(`captured no frames (${dropped} screenshots failed) — is the page rendering?`)
   console.error(`recorded ${frame} frames in ${out}`)
+  if (dropped > frame) console.error(`warning: dropped ${dropped} frames — the GIF will stutter`)
 }
 
 function encode() {
